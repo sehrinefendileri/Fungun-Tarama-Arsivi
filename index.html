@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ŞEHRİN EFENDİLERİ Fungun Tarama Arşivi ve Bildirim Sistemi.">
+    <meta name="theme-color" content="#050505">
+    <title>Tarama Arşivi | ŞEHRİN EFENDİLERİ</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-main: #050505;
+            --bg-secondary: #111111;
+            --color-primary: #7f1d1d;
+            --color-primary-hover: #991b1b;
+            --color-accent: #ef4444;
+            --color-silver: #d1d5db;
+            --color-white: #ffffff;
+            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--bg-main); color: var(--color-silver); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        h1, h2, h3 { color: var(--color-white); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .section-title { text-align: center; font-size: clamp(22px, 4vw, 32px); margin-bottom: 30px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--color-primary); margin: 15px auto 0; border-radius: 2px; }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        section { padding: 60px 0; }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 75px; width: 90%; max-width: 1200px; margin: 0 auto; }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--color-silver); transition: var(--transition-smooth); }
+        .nav-links a:hover { color: var(--color-white); }
+        .header-btn { background: linear-gradient(135deg, var(--color-primary), #450a0a); color: var(--color-white); padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(255,100,100,0.2); }
+
+        .form-card, .table-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 30px; backdrop-filter: blur(10px); margin-bottom: 40px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--color-white); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-control { width: 100%; padding: 14px; background: rgba(10, 10, 10, 0.8); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--color-white); font-size: 15px; outline: none; transition: var(--transition-smooth); }
+        .form-control:focus { border-color: var(--color-accent); box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+
+        .btn-submit { background: linear-gradient(135deg, var(--color-primary), #450a0a); color: var(--color-white); width: 100%; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,100,100,0.2); cursor: pointer; transition: var(--transition-smooth); }
+        .btn-submit:hover { background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary)); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(153, 27, 27, 0.5); }
+
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 15px; border-bottom: 1px solid var(--glass-border); font-size: 14px; }
+        th { color: var(--color-white); text-transform: uppercase; letter-spacing: 1px; background: rgba(0,0,0,0.4); }
+        td { color: var(--color-silver); }
+        .link-btn { background: var(--color-primary); color: var(--color-white); padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; display: inline-block; transition: var(--transition-smooth); }
+        .link-btn:hover { background: var(--color-primary-hover); }
+
+        footer { background: rgba(5, 5, 5, 0.8); padding: 30px 0; text-align: center; border-top: 1px solid var(--glass-border); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 9999;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { opacity: 1; }
+        .modal-box {
+            background: var(--bg-secondary); border: 2px solid; border-radius: 16px;
+            padding: 40px; max-width: 450px; width: 90%; text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.show .modal-box { transform: scale(1); }
+        
+        .modal-icon { font-size: 65px; margin-bottom: 20px; }
+        .modal-title { font-size: 26px; color: var(--color-white); margin-bottom: 15px; font-weight: 800; letter-spacing: 1px; }
+        .modal-message { font-size: 16px; color: var(--color-silver); margin-bottom: 35px; line-height: 1.6; }
+        
+        .modal-close-btn {
+            background: var(--bg-main); color: var(--color-white);
+            border: 1px solid var(--glass-border); padding: 15px 30px; border-radius: 8px;
+            font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+            cursor: pointer; transition: var(--transition-smooth); width: 100%;
+        }
+
+        .modal-box.error { border-color: var(--color-accent); }
+        .modal-box.error .modal-icon { color: var(--color-accent); }
+        .modal-box.error .modal-close-btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-white); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        
+        .modal-box.success { border-color: #4ade80; }
+        .modal-box.success .modal-icon { color: #4ade80; }
+        .modal-box.success .modal-close-btn:hover { background: #4ade80; border-color: #4ade80; color: #050505; box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-container">
+            <ul class="nav-links">
+                <li><a href="https://sehrinefendileri.com">Ana Siteye Dön</a></li>
+            </ul>
+            <a href="steam://connect/95.173.173.81:27015" class="header-btn">SUNUCUYA BAĞLAN</a>
+        </nav>
+    </header>
+
+    <main style="padding-top: 120px;">
+        <div class="container">
+            <h1 class="section-title">Fungun Tarama Arşivi</h1>
+
+            <!-- Admin Formu (Başlangıçta Gizli) -->
+            <div id="adminFormContainer" class="form-card" style="display: none;">
+                <h3 style="margin-bottom: 20px; font-size: 18px;"><i class="fas fa-upload" style="margin-right: 8px; color: var(--color-accent);"></i> Tarama Sonucu Bildir</h3>
+                <form id="taramaForm">
+                    <div class="form-group">
+                        <label for="oyuncuNick">Oyuncu Nick</label>
+                        <input type="text" id="oyuncuNick" class="form-control" placeholder="Örn: ŞEHRİN EFENDİSİ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taramaLinki">Fungun Sonuç Linki</label>
+                        <input type="url" id="taramaLinki" class="form-control" placeholder="https://fungun.top/..." required>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitBtn">Taramayı Gönder</button>
+                </form>
+            </div>
+
+            <!-- Arşiv Tablosu -->
+            <div class="table-card">
+                <div style="margin-bottom: 25px;">
+                    <h3 style="font-size: 18px; margin-bottom: 15px;"><i class="fas fa-list" style="margin-right: 8px; color: var(--color-accent);"></i> Son Yapılan Taramalar</h3>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #777;"><i class="fas fa-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Oyuncu nickine göre arayın..." style="padding-left: 45px; font-size: 15px;">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tarih / Saat</th>
+                                <th>Oyuncu Nick</th>
+                                <th>Tarama Linki</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taramalarTableBody">
+                            <tr>
+                                <td colspan="3" style="text-align: center; color: #777;">Yükleniyor...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="font-size: 13px; color: #666;">© 2026 ŞEHRİN EFENDİLERİ - Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <div id="customModal" class="modal-overlay">
+        <div id="modalBox" class="modal-box">
+            <i id="modalIcon" class="fas modal-icon"></i>
+            <h2 id="modalTitle" class="modal-title">DİKKAT</h2>
+            <p id="modalMessage" class="modal-message"></p>
+            <button id="modalCloseBtn" class="modal-close-btn">TAMAM</button>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ngcnffcnjiqohdfaibdz.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_3Hze5gVaiM5lvknNzngwvw_TFxjW-3J';
+
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const form = document.getElementById('taramaForm');
+        const tableBody = document.getElementById('taramalarTableBody');
+        const submitBtn = document.getElementById('submitBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        // URL Kontrolü: ?admin=sehrinefendileri parametresi varsa formu göster
+        const adminFormContainer = document.getElementById('adminFormContainer');
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'sehrinefendileri') {
+            adminFormContainer.style.display = 'block';
+        }
+
+        const modalOverlay = document.getElementById('customModal');
+        const modalBox = document.getElementById('modalBox');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        let allTaramalar = [];
+        let lastSubmitTime = localStorage.getItem('lastSubmitTime') || 0;
+        const COOLDOWN_TIME = 60000; 
+
+        function showMessage(msg, isError) {
+            modalMessage.textContent = msg;
+            if (isError) {
+                modalBox.className = 'modal-box error';
+                modalIcon.className = 'fas fa-exclamation-triangle modal-icon';
+                modalTitle.textContent = 'DİKKAT!';
+            } else {
+                modalBox.className = 'modal-box success';
+                modalIcon.className = 'fas fa-check-circle modal-icon';
+                modalTitle.textContent = 'BAŞARILI';
+            }
+            modalOverlay.style.display = 'flex';
+            setTimeout(() => { modalOverlay.classList.add('show'); }, 10);
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('show');
+            setTimeout(() => { modalOverlay.style.display = 'none'; }, 300);
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        async function fetchTaramalar() {
+            const { data, error } = await _supabase
+                .from('taramalar')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Veri çekme hatası:', error);
+                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--color-accent);">Veriler yüklenirken hata oluştu.</td></tr>`;
+                return;
+            }
+
+            allTaramalar = data || [];
+            renderTable(allTaramalar);
+        }
+
+        function renderTable(dataToRender) {
+            if (dataToRender.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #777;">Kayıt bulunamadı.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = '';
+            dataToRender.forEach(row => {
+                const tarih = new Date(row.created_at).toLocaleString('tr-TR');
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${tarih}</td>
+                    <td style="font-weight: 600; color: var(--color-white);">${escapeHtml(row.oyuncu_nick)}</td>
+                    <td><a href="${escapeHtml(row.tarama_linki)}" target="_blank" rel="noopener noreferrer" class="link-btn"><i class="fas fa-external-link-alt"></i> Sonucu Gör</a></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filtered = allTaramalar.filter(row => 
+                row.oyuncu_nick.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        });
+
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const oyuncu_nick = document.getElementById('oyuncuNick').value.trim();
+                const tarama_linki = document.getElementById('taramaLinki').value.trim();
+
+                if (!oyuncu_nick || !tarama_linki) return;
+
+                if (!tarama_linki.includes('fungun.top')) {
+                    showMessage('Hatalı bağlantı! Lütfen Fungun sitesinden aldığınız geçerli bir fungun sonuç bağlantısını yapıştırın.', true);
+                    return;
+                }
+
+                const now = Date.now();
+                if (now - lastSubmitTime < COOLDOWN_TIME) {
+                    const remaining = Math.ceil((COOLDOWN_TIME - (now - lastSubmitTime)) / 1000);
+                    showMessage(`Spam koruması aktif. Yeni bir tarama göndermek için ${remaining} saniye beklemelisiniz.`, true);
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Gönderiliyor...';
+
+                const { error } = await _supabase
+                    .from('taramalar')
+                    .insert([{ oyuncu_nick, tarama_linki }]);
+
+                if (error) {
+                    showMessage('Gönderim sırasında hata oluştu: ' + error.message, true);
+                } else {
+                    form.reset();
+                    searchInput.value = '';
+                    fetchTaramalar();
+                    
+                    lastSubmitTime = Date.now();
+                    localStorage.setItem('lastSubmitTime', lastSubmitTime);
+                    showMessage('Tarama sonucu başarıyla arşive eklenmiştir. Teşekkürler!', false);
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Taramayı Gönder';
+            });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        fetchTaramalar();
+    </script>
+</body>
+</html>
