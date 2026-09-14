@@ -201,8 +201,6 @@
         const modalCloseBtn = document.getElementById('modalCloseBtn');
 
         let allTaramalar = [];
-        let lastSubmitTime = localStorage.getItem('lastSubmitTime') || 0;
-        const COOLDOWN_TIME = 60000; 
 
         function showMessage(msg, isError) {
             modalMessage.textContent = msg;
@@ -286,13 +284,6 @@
                     return;
                 }
 
-                const now = Date.now();
-                if (now - lastSubmitTime < COOLDOWN_TIME) {
-                    const remaining = Math.ceil((COOLDOWN_TIME - (now - lastSubmitTime)) / 1000);
-                    showMessage(`Spam koruması aktif. Yeni bir tarama göndermek için ${remaining} saniye beklemelisiniz.`, true);
-                    return;
-                }
-
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Gönderiliyor...';
 
@@ -307,8 +298,6 @@
                     searchInput.value = '';
                     fetchTaramalar();
                     
-                    lastSubmitTime = Date.now();
-                    localStorage.setItem('lastSubmitTime', lastSubmitTime);
                     showMessage('Tarama sonucu başarıyla arşive eklenmiştir. Teşekkürler!', false);
                 }
 
