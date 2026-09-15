@@ -33,6 +33,67 @@
         h1, h2, h3 { color: var(--color-white); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
         .section-title { text-align: center; font-size: clamp(22px, 4vw, 32px); margin-bottom: 30px; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--color-primary); margin: 15px auto 0; border-radius: 2px; }
+                .info-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.18), rgba(20, 20, 20, 0.75));
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-left: 4px solid var(--color-accent);
+            border-radius: 10px;
+            padding: 22px 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .info-alert-icon {
+            color: var(--color-accent);
+            font-size: 26px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .info-alert-content h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--color-white);
+            letter-spacing: 1px;
+        }
+
+        .info-alert-content p {
+            color: var(--color-silver);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .info-alert-content strong {
+            color: var(--color-white);
+        }
+
+        .info-alert-highlight {
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .info-alert {
+                padding: 18px;
+                gap: 14px;
+            }
+
+            .info-alert-icon {
+                font-size: 22px;
+            }
+
+            .info-alert-content h3 {
+                font-size: 14px;
+            }
+
+            .info-alert-content p {
+                font-size: 13px;
+            }
+        }
 
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
         section { padding: 60px 0; }
@@ -113,6 +174,23 @@
         <div class="container">
             <h1 class="section-title">Fungun Tarama Arşivi</h1>
 
+<!-- Tarama Sonuçları Bilgilendirmesi -->
+<div class="info-alert">
+    <i class="fas fa-circle-exclamation info-alert-icon"></i>
+
+    <div class="info-alert-content">
+        <h3>TARAMA SONUÇLARI HAKKINDA ÖNEMLİ BİLGİ</h3>
+
+        <p>
+            Arşivimizde kayıtlı oyuncuların bağlantısı eski bir taramaya ait olabilir.
+            <strong>Güncel taramaları ve oyuncuya ait diğer tüm tarama kayıtlarını görmek için
+            açılan Fungun sayfasını aşağı doğru kaydırın.</strong>
+            <span class="info-alert-highlight">
+                En güncel sonuçlar "Other player scans" bölümünde yer almaktadır.
+            </span>
+        </p>
+    </div>
+</div>
             <!-- Admin Formu (Başlangıçta Gizli) -->
             <div id="adminFormContainer" class="form-card" style="display: none;">
                 <h3 style="margin-bottom: 20px; font-size: 18px;"><i class="fas fa-upload" style="margin-right: 8px; color: var(--color-accent);"></i> Tarama Sonucu Bildir</h3>
