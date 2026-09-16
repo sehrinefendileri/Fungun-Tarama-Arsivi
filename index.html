@@ -221,14 +221,13 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Tarih / Saat</th>
                                 <th>Oyuncu Nick</th>
                                 <th>Tarama Linki</th>
                             </tr>
                         </thead>
                         <tbody id="taramalarTableBody">
                             <tr>
-                                <td colspan="3" style="text-align: center; color: #777;">Yükleniyor...</td>
+                                <td colspan="2" style="text-align: center; color: #777;">Yükleniyor...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -313,7 +312,7 @@
 
             if (error) {
                 console.error('Veri çekme hatası:', error);
-                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--color-accent);">Veriler yüklenirken hata oluştu.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--color-accent);">Veriler yüklenirken hata oluştu.</td></tr>`;
                 return;
             }
 
@@ -323,18 +322,20 @@
 
         function renderTable(dataToRender) {
             if (dataToRender.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #777;">Kayıt bulunamadı.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #777;">Kayıt bulunamadı.</td></tr>`;
                 return;
             }
 
             tableBody.innerHTML = '';
             dataToRender.forEach(row => {
-                const tarih = new Date(row.created_at).toLocaleString('tr-TR');
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${tarih}</td>
                     <td style="font-weight: 600; color: var(--color-white);">${escapeHtml(row.oyuncu_nick)}</td>
-                    <td><a href="${escapeHtml(row.tarama_linki)}" target="_blank" rel="noopener noreferrer" class="link-btn"><i class="fas fa-external-link-alt"></i> Sonucu Gör</a></td>
+                    <td>
+                    <a href="${escapeHtml(row.tarama_linki)}" target="_blank" rel="noopener noreferrer" class="link-btn">
+                    <i class="fas fa-external-link-alt"></i> Sonucu Gör
+                    </a>
+                    </td>
                 `;
                 tableBody.appendChild(tr);
             });
