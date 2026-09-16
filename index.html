@@ -117,7 +117,16 @@
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 15px; border-bottom: 1px solid var(--glass-border); font-size: 14px; }
-        th { color: var(--color-white); text-transform: uppercase; letter-spacing: 1px; background: rgba(0,0,0,0.4); }
+        th {
+        color: var(--color-white);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        background: rgba(0,0,0,0.55);
+        font-size: 15px;
+        font-weight: 800;
+        padding: 17px 15px;
+        border-bottom: 2px solid var(--color-primary);
+}
         td { color: var(--color-silver); }
         .link-btn { background: var(--color-primary); color: var(--color-white); padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; display: inline-block; transition: var(--transition-smooth); }
         .link-btn:hover { background: var(--color-primary-hover); }
@@ -222,7 +231,7 @@
                         <thead>
                             <tr>
                                 <th>Oyuncu Nick</th>
-                                <th>Tarama Linki</th>
+                                <th>Sonuç</th>
                             </tr>
                         </thead>
                         <tbody id="taramalarTableBody">
