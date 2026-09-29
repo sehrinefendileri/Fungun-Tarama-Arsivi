@@ -6,6 +6,8 @@
     <meta name="description" content="ŞEHRİN EFENDİLERİ Fungun Tarama Arşivi ve Bildirim Sistemi.">
     <meta name="theme-color" content="#050505">
     <title>Tarama Arşivi | ŞEHRİN EFENDİLERİ</title>
+
+    <link rel="icon" type="image/jpeg" href="bg.jpg">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -26,7 +28,15 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: var(--bg-main); color: var(--color-silver); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        body {
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.82)),
+                url("bg.jpg") center center / cover fixed no-repeat;
+        color: var(--color-silver);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+} 
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
