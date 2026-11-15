@@ -401,9 +401,21 @@
 
         const nickCell = document.createElement('td');
         const sıraNo = (currentPage - 1) * PAGE_SIZE + index + 1;
-        nickCell.textContent = `${sıraNo}. ${row.oyuncu_nick || ''}`;
-        nickCell.style.fontWeight = '600';
-        nickCell.style.color = 'var(--color-white)';
+
+        const numberSpan = document.createElement('span');
+        numberSpan.textContent = `${sıraNo}.`;
+        numberSpan.style.display = 'inline-block';
+        numberSpan.style.width = '35px';
+        numberSpan.style.color = '#999';
+        numberSpan.style.fontWeight = '700';
+
+        const nickSpan = document.createElement('span');
+        nickSpan.textContent = row.oyuncu_nick || '';
+        nickSpan.style.fontWeight = '600';
+        nickSpan.style.color = 'var(--color-white)';
+
+        nickCell.appendChild(numberSpan);
+        nickCell.appendChild(nickSpan);
 
         const linkCell = document.createElement('td');
         const link = document.createElement('a');
