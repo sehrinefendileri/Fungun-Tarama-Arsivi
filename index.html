@@ -396,11 +396,12 @@
         return;
     }
 
-    dataToRender.forEach(row => {
+    dataToRender.forEach((row, index) => {
         const tr = document.createElement('tr');
 
         const nickCell = document.createElement('td');
-        nickCell.textContent = row.oyuncu_nick || '';
+        const sıraNo = (currentPage - 1) * PAGE_SIZE + index + 1;
+        nickCell.textContent = `${sıraNo}. ${row.oyuncu_nick || ''}`;
         nickCell.style.fontWeight = '600';
         nickCell.style.color = 'var(--color-white)';
 
