@@ -8,9 +8,7 @@
     <title>Tarama Arşivi | ŞEHRİN EFENDİLERİ</title>
 
     <link rel="icon" type="image/jpeg" href="bg.jpg">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -28,22 +26,25 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+
         body {
             background:
                 linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.82)),
                 url("bg.jpg") center center / cover fixed no-repeat;
-        color: var(--color-silver);
-        min-height: 100vh;
-        overflow-x: hidden;
-        line-height: 1.6;
-} 
+            color: var(--color-silver);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
         h1, h2, h3 { color: var(--color-white); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
         .section-title { text-align: center; font-size: clamp(22px, 4vw, 32px); margin-bottom: 30px; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--color-primary); margin: 15px auto 0; border-radius: 2px; }
-                .info-alert {
+
+        .info-alert {
             display: flex;
             align-items: flex-start;
             gap: 18px;
@@ -56,53 +57,17 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
         }
 
-        .info-alert-icon {
-            color: var(--color-accent);
-            font-size: 26px;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .info-alert-content h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: var(--color-white);
-            letter-spacing: 1px;
-        }
-
-        .info-alert-content p {
-            color: #e5e7eb;
-            font-size: 16px;
-            line-height: 1.8;
-            margin: 0;
-        }
-
-        .info-alert-content strong {
-            color: var(--color-white);
-        }
-
-        .info-alert-highlight {
-            color: var(--color-accent);
-            font-weight: 700;
-        }
+        .info-alert-icon { color: var(--color-accent); font-size: 26px; margin-top: 2px; flex-shrink: 0; }
+        .info-alert-content h3 { font-size: 16px; margin-bottom: 8px; color: var(--color-white); letter-spacing: 1px; }
+        .info-alert-content p { color: #e5e7eb; font-size: 16px; line-height: 1.8; margin: 0; }
+        .info-alert-content strong { color: var(--color-white); }
+        .info-alert-highlight { color: var(--color-accent); font-weight: 700; }
 
         @media (max-width: 600px) {
-            .info-alert {
-                padding: 18px;
-                gap: 14px;
-            }
-
-            .info-alert-icon {
-                font-size: 22px;
-            }
-
-            .info-alert-content h3 {
-                font-size: 14px;
-            }
-
-            .info-alert-content p {
-                font-size: 14px;
-            }
+            .info-alert { padding: 18px; gap: 14px; }
+            .info-alert-icon { font-size: 22px; }
+            .info-alert-content h3 { font-size: 14px; }
+            .info-alert-content p { font-size: 14px; }
         }
 
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
@@ -123,42 +88,66 @@
 
         .btn-submit { background: linear-gradient(135deg, var(--color-primary), #450a0a); color: var(--color-white); width: 100%; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,100,100,0.2); cursor: pointer; transition: var(--transition-smooth); }
         .btn-submit:hover { background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary)); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(153, 27, 27, 0.5); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 15px; border-bottom: 1px solid var(--glass-border); font-size: 15px; }
         th {
-        color: var(--color-white);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        background: rgba(20, 20, 20, 0.95);
-        font-size: 16px;
-        font-weight: 900;
-        padding: 18px 18px;
-        border-bottom: 3px solid var(--color-primary);
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(20, 20, 20, 0.95);
+            font-size: 16px;
+            font-weight: 900;
+            padding: 18px 18px;
+            border-bottom: 3px solid var(--color-primary);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
         td { color: var(--color-silver); }
         .link-btn { background: var(--color-primary); color: var(--color-white); padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 700; display: inline-block; transition: var(--transition-smooth); }
         .link-btn:hover { background: var(--color-primary-hover); }
-        /* Tablo satırı hover efekti */
-        tbody tr {
-        transition: all 0.25s ease;
-}
 
-    tbody tr:hover td {
-    background: rgba(127, 29, 29, 0.20);
-    color: var(--color-white);
-}
+        tbody tr { transition: all 0.25s ease; }
+        tbody tr:hover td { background: rgba(127, 29, 29, 0.20); color: var(--color-white); }
+        tbody tr:hover td:first-child { box-shadow: inset 4px 0 0 var(--color-accent); }
+        tbody tr:hover .link-btn { background: var(--color-primary-hover); box-shadow: 0 0 12px rgba(153, 27, 27, 0.45); }
 
-   tbody tr:hover td:first-child {
-    box-shadow: inset 4px 0 0 var(--color-accent);
-}
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
 
-   tbody tr:hover .link-btn {
-    background: var(--color-primary-hover);
-    box-shadow: 0 0 12px rgba(153, 27, 27, 0.45);
-}
+        .pagination button {
+            background: #171717;
+            color: #d1d5db;
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 9px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .pagination button:hover:not(:disabled),
+        .pagination button.active {
+            background: #7f1d1d;
+            color: white;
+            border-color: #991b1b;
+        }
+
+        .pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .pagination-info {
+            text-align: center;
+            margin-top: 15px;
+            color: #999;
+            font-size: 13px;
+        }
 
         footer { background: rgba(5, 5, 5, 0.8); padding: 30px 0; text-align: center; border-top: 1px solid var(--glass-border); }
 
@@ -176,25 +165,26 @@
             transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .modal-overlay.show .modal-box { transform: scale(1); }
-        
         .modal-icon { font-size: 65px; margin-bottom: 20px; }
         .modal-title { font-size: 26px; color: var(--color-white); margin-bottom: 15px; font-weight: 800; letter-spacing: 1px; }
         .modal-message { font-size: 16px; color: var(--color-silver); margin-bottom: 35px; line-height: 1.6; }
-        
         .modal-close-btn {
             background: var(--bg-main); color: var(--color-white);
             border: 1px solid var(--glass-border); padding: 15px 30px; border-radius: 8px;
             font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
             cursor: pointer; transition: var(--transition-smooth); width: 100%;
         }
-
         .modal-box.error { border-color: var(--color-accent); }
         .modal-box.error .modal-icon { color: var(--color-accent); }
         .modal-box.error .modal-close-btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-white); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
-        
         .modal-box.success { border-color: #4ade80; }
         .modal-box.success .modal-icon { color: #4ade80; }
         .modal-box.success .modal-close-btn:hover { background: #4ade80; border-color: #4ade80; color: #050505; box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
+
+        @media (max-width: 600px) {
+            .form-card, .table-card { padding: 18px; }
+            .pagination button { padding: 8px 11px; font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -212,24 +202,21 @@
         <div class="container">
             <h1 class="section-title">Fungun Tarama Arşivi</h1>
 
-<!-- Tarama Sonuçları Bilgilendirmesi -->
-<div class="info-alert">
-    <i class="fas fa-circle-exclamation info-alert-icon"></i>
+            <div class="info-alert">
+                <i class="fas fa-circle-exclamation info-alert-icon"></i>
+                <div class="info-alert-content">
+                    <h3>TARAMA SONUÇLARI HAKKINDA ÖNEMLİ BİLGİ</h3>
+                    <p>
+                        Arşivimizde kayıtlı oyuncuların bağlantısı eski bir taramaya ait olabilir.
+                        <strong>Güncel taramaları ve oyuncuya ait diğer tüm tarama kayıtlarını görmek için
+                        açılan Fungun sayfasını aşağı doğru kaydırın.</strong>
+                        <span class="info-alert-highlight">
+                            En güncel sonuçlar "Other player scans" bölümünde yer almaktadır.
+                        </span>
+                    </p>
+                </div>
+            </div>
 
-    <div class="info-alert-content">
-        <h3>TARAMA SONUÇLARI HAKKINDA ÖNEMLİ BİLGİ</h3>
-
-        <p>
-            Arşivimizde kayıtlı oyuncuların bağlantısı eski bir taramaya ait olabilir.
-            <strong>Güncel taramaları ve oyuncuya ait diğer tüm tarama kayıtlarını görmek için
-            açılan Fungun sayfasını aşağı doğru kaydırın.</strong>
-            <span class="info-alert-highlight">
-                En güncel sonuçlar "Other player scans" bölümünde yer almaktadır.
-            </span>
-        </p>
-    </div>
-</div>
-            <!-- Admin Formu (Başlangıçta Gizli) -->
             <div id="adminFormContainer" class="form-card" style="display: none;">
                 <h3 style="margin-bottom: 20px; font-size: 18px;"><i class="fas fa-upload" style="margin-right: 8px; color: var(--color-accent);"></i> Tarama Sonucu Bildir</h3>
                 <form id="taramaForm">
@@ -241,16 +228,15 @@
                         <label for="taramaLinki">Fungun Sonuç Linki</label>
                         <input type="url" id="taramaLinki" class="form-control" placeholder="https://fungun.top/..." required>
                     </div>
-                    
                     <button type="submit" class="btn-submit" id="submitBtn">Taramayı Gönder</button>
                 </form>
             </div>
 
-            <!-- Arşiv Tablosu -->
             <div class="table-card">
                 <div style="margin-bottom: 25px;">
                     <h3 style="font-size: 20px; margin-bottom: 18px; font-weight: 900; letter-spacing: 2px;">
-    <i class="fas fa-list" style="margin-right: 8px; color: var(--color-accent);"></i> Kayıtlı Taramalar</h3>
+                        <i class="fas fa-list" style="margin-right: 8px; color: var(--color-accent);"></i> Kayıtlı Taramalar
+                    </h3>
                     <div style="position: relative;">
                         <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #777;"><i class="fas fa-search"></i></span>
                         <input type="text" id="searchInput" class="form-control" placeholder="Oyuncu nickine göre arayın..." style="padding-left: 45px; font-size: 15px;">
@@ -271,6 +257,8 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="pagination" id="pagination"></div>
+                <div class="pagination-info" id="paginationInfo">Kayıtlar yükleniyor...</div>
             </div>
         </div>
     </main>
@@ -301,8 +289,9 @@
         const tableBody = document.getElementById('taramalarTableBody');
         const submitBtn = document.getElementById('submitBtn');
         const searchInput = document.getElementById('searchInput');
+        const pagination = document.getElementById('pagination');
+        const paginationInfo = document.getElementById('paginationInfo');
 
-        // URL Kontrolü: ?admin=sehrinefendileri parametresi varsa formu göster
         const adminFormContainer = document.getElementById('adminFormContainer');
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === 'sehrinefendileri') {
@@ -316,7 +305,11 @@
         const modalMessage = document.getElementById('modalMessage');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-        let allTaramalar = [];
+        const PAGE_SIZE = 25;
+        let currentPage = 1;
+        let totalRecords = 0;
+        let searchTimeout = null;
+        let activeRequest = 0;
 
         function showMessage(msg, isError) {
             modalMessage.textContent = msg;
@@ -344,60 +337,164 @@
         });
 
         async function fetchTaramalar() {
-            const { data, error } = await _supabase
+            const requestId = ++activeRequest;
+            const query = searchInput.value.trim();
+            const from = (currentPage - 1) * PAGE_SIZE;
+            const to = from + PAGE_SIZE - 1;
+
+            tableBody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:#777;">Yükleniyor...</td></tr>';
+
+            let request = _supabase
                 .from('taramalar')
-                .select('*')
-                .order('created_at', { ascending: false });
+                .select('oyuncu_nick, tarama_linki', { count: 'exact' })
+                .order('created_at', { ascending: false })
+                .range(from, to);
+
+            if (query) {
+                request = request.ilike('oyuncu_nick', `%${query}%`);
+            }
+
+            const { data, error, count } = await request;
+
+            if (requestId !== activeRequest) return;
 
             if (error) {
                 console.error('Veri çekme hatası:', error);
-                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--color-accent);">Veriler yüklenirken hata oluştu.</td></tr>`;
+                tableBody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:var(--color-accent);">Veriler yüklenirken hata oluştu.</td></tr>';
+                pagination.innerHTML = '';
+                paginationInfo.textContent = 'Kayıtlar yüklenemedi.';
                 return;
             }
 
-            allTaramalar = data || [];
-            renderTable(allTaramalar);
+            totalRecords = count || 0;
+
+            const totalPages = Math.ceil(totalRecords / PAGE_SIZE);
+            if (currentPage > Math.max(totalPages, 1)) {
+                currentPage = Math.max(totalPages, 1);
+                fetchTaramalar();
+                return;
+            }
+
+            renderTable(data || []);
+            renderPagination();
         }
 
         function renderTable(dataToRender) {
-            if (dataToRender.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: #777;">Kayıt bulunamadı.</td></tr>`;
-                return;
-            }
+    tableBody.innerHTML = '';
 
-            tableBody.innerHTML = '';
-            dataToRender.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight: 600; color: var(--color-white);">${escapeHtml(row.oyuncu_nick)}</td>
-                    <td>
-                    <a href="${escapeHtml(row.tarama_linki)}" target="_blank" rel="noopener noreferrer" class="link-btn">
-                    <i class="fas fa-external-link-alt"></i> Sonucu Gör
-                    </a>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
-            });
+    if (dataToRender.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+
+        td.colSpan = 2;
+        td.textContent = 'Kayıt bulunamadı.';
+        td.style.textAlign = 'center';
+        td.style.color = '#777';
+
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
+        return;
+    }
+
+    dataToRender.forEach(row => {
+        const tr = document.createElement('tr');
+
+        const nickCell = document.createElement('td');
+        nickCell.textContent = row.oyuncu_nick || '';
+        nickCell.style.fontWeight = '600';
+        nickCell.style.color = 'var(--color-white)';
+
+        const linkCell = document.createElement('td');
+        const link = document.createElement('a');
+
+        try {
+            const url = new URL(row.tarama_linki);
+
+            if (url.protocol !== 'https:' || url.hostname !== 'fungun.top') {
+                link.textContent = 'Geçersiz bağlantı';
+            } else {
+                link.href = url.href;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.className = 'link-btn';
+                link.innerHTML = '<i class="fas fa-external-link-alt"></i> Sonucu Gör';
+            }
+        } catch {
+            link.textContent = 'Geçersiz bağlantı';
         }
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const filtered = allTaramalar.filter(row => 
-                row.oyuncu_nick.toLowerCase().includes(query)
-            );
-            renderTable(filtered);
+        linkCell.appendChild(link);
+        tr.appendChild(nickCell);
+        tr.appendChild(linkCell);
+        tableBody.appendChild(tr);
+    });
+}
+
+        function renderPagination() {
+            const totalPages = Math.ceil(totalRecords / PAGE_SIZE);
+            const safeTotalPages = Math.max(totalPages, 1);
+            const startRecord = totalRecords === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+            const endRecord = Math.min(currentPage * PAGE_SIZE, totalRecords);
+
+            pagination.innerHTML = '';
+            paginationInfo.textContent =
+                `Toplam ${totalRecords} kayıt · ${startRecord}-${endRecord} arası gösteriliyor · Sayfa ${currentPage}/${safeTotalPages}`;
+
+            function createButton(label, page, disabled, active = false) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = label;
+                button.disabled = disabled;
+
+                if (active) button.classList.add('active');
+
+                button.addEventListener('click', () => {
+                    if (page < 1 || page > totalPages || page === currentPage) return;
+                    currentPage = page;
+                    fetchTaramalar();
+                });
+
+                pagination.appendChild(button);
+            }
+
+            createButton('‹ Önceki', currentPage - 1, currentPage === 1);
+
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let page = startPage; page <= endPage; page++) {
+                createButton(String(page), page, false, page === currentPage);
+            }
+
+            createButton('Sonraki ›', currentPage + 1, currentPage >= totalPages);
+        }
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentPage = 1;
+                fetchTaramalar();
+            }, 350);
         });
 
         if (form) {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 const oyuncu_nick = document.getElementById('oyuncuNick').value.trim();
                 const tarama_linki = document.getElementById('taramaLinki').value.trim();
 
                 if (!oyuncu_nick || !tarama_linki) return;
 
-                if (!tarama_linki.includes('fungun.top')) {
+                let parsedUrl;
+                try {
+                    parsedUrl = new URL(tarama_linki);
+                } catch {
+                    showMessage('Geçersiz bağlantı. Lütfen geçerli bir Fungun sonuç bağlantısı girin.', true);
+                    return;
+                }
+
+                if (parsedUrl.protocol !== 'https:' || parsedUrl.hostname !== 'fungun.top') {
                     showMessage('Hatalı bağlantı! Lütfen Fungun sitesinden aldığınız geçerli bir fungun sonuç bağlantısını yapıştırın.', true);
                     return;
                 }
@@ -414,18 +511,14 @@
                 } else {
                     form.reset();
                     searchInput.value = '';
-                    fetchTaramalar();
-                    
+                    currentPage = 1;
+                    await fetchTaramalar();
                     showMessage('Tarama sonucu başarıyla arşive eklenmiştir. Teşekkürler!', false);
                 }
 
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Taramayı Gönder';
             });
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         fetchTaramalar();
